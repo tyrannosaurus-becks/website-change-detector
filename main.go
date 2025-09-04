@@ -4,7 +4,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"os"
@@ -106,7 +106,7 @@ func checkPage() (bool, error) {
 	if resp.StatusCode != 200 {
 		return false, errors.New(resp.Status)
 	}
-	b, err := ioutil.ReadAll(resp.Body)
+	b, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return false, err
 	}
@@ -141,7 +141,7 @@ func notify(twilioAccountSID, twilioAuthToken string) error {
 		}
 	}()
 	if resp.StatusCode != 201 {
-		b, _ := ioutil.ReadAll(resp.Body)
+		b, _ := io.ReadAll(resp.Body)
 		return fmt.Errorf("%d: %s", resp.StatusCode, b)
 	}
 	return nil
